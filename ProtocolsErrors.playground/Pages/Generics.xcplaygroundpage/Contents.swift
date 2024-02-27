@@ -1,7 +1,7 @@
 import Foundation
 
 /**
- On this page, you will implement a linked list protocol using generics. If you do not know what a linked list is or how it can be implemented, I reccomend doing research online to familiarize yourself with the data structure. Your code must work for any generic type, T.
+ On this page, you will implement a linked list protocol using generics. If you do not know what a linked list is or how it can be implemented, I recommend doing research online to familiarize yourself with the data structure. Your code must work for any generic type, T.
  Here are the steps for you to do.
   1. Add an initializer (constructor) for linked list nodes. Node values should not be empty; if they are, provide a default value.
   2. Implement the necessary properties and functions outlined by the LinkedList protocol in the MyLL struct. Add additional functions or properties if you would like to.
