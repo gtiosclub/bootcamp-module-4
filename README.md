@@ -97,7 +97,70 @@ It should conform to the given protocol.
 
 ## Error Handling
 
-#### What you've accomplished so far:
+Navigate to the _ErrorHandling_ playground page.
+
+You should see a couple enums: `CardValue` and `CardSuit`.
+
+You should also see a protocol `Card` and a dictionary `cardData`.
+
+Our goal will be to parse the dictionary of card data, print any errors,
+and return an array of _Card_ objects.
+
+1. Take a look at the Card protocol. Notice that the init function can throw
+   but we haven't defined an error type.
+   
+   Declare a custom error type called `CardError` which deals with four
+   possible issues that can arise when parsing a card dictionary:
+   
+   - Missing suit
+   - Missing value
+   - Invalid suit
+   - Invalid value
+   
+2. Once we've defined errors thrown by _Card_, let's actually implement the
+   card protocol.
+   
+   Define a struct named `StandardCard` which implements `Card`. Ensure that
+   the init function can handle all four possible errors and throw them
+   properly.
+   
+   Note that converting strings to CardValue and CardSuit can be done using
+   the static `parse()` function defined in both enums.
+   
+3. Now, let's write a function that checks if the card data contains an invalid
+   card. This time, attempt to instantiate each card using optional conversion
+   (i.e. `try?`). Return a boolean indicating whether _all_ cards were
+   instantiated successfully or not.
+   
+   Run the whole playground. You should get a message saying that an invalid
+   card was found.
+   
+4. Now we'll implement a function which converts raw card data into an array of
+   _Card_ items. Using a **do-catch** block, try to parse each card and print
+   an error _specifically for the type of error thrown_ if it fails.
+   
+   If successful, add the card to the result array.
+   
+   Then, try running the whole playground. You should see the error messages
+   that you wrote, along with an array of objects. However, this array isn't
+   particularly human-readable.
+   
+5. Make an extension to `StandardCard` which conforms to CustomStringConvertible.
+
+   A requirement of this protocol is that you provide a variable called 
+   `description`. Make this a computed variable which returns the value and suit
+   of the card in the format `[value] of [suit]` (e.g. `eight of hearts`)
+   
+   It may be helpful to refer to the
+   [Swift docs](https://developer.apple.com/documentation/swift/customstringconvertible)
+   for CustomStringConvertible.
+   
+6. Run the playground again. You should now see the error messages as before, but
+   now the printed array should be a human-readable list!
+   
+## Conclusion
+
+#### What you've accomplished today:
 
 - [x] Implement properties of a protocol
 - [x] Write a protocol from scratch

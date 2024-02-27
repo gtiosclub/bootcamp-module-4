@@ -104,12 +104,7 @@ let cardData: [[String: String]] = [
 //     - Invalid suit
 //     - Invalid value
 /* BEGIN YOUR CODE */
-enum CardError: Error {
-    case missingSuit
-    case missingValue
-    case invalidSuit
-    case invalidValue
-}
+
 /* END YOUR CODE */
 
 // [2] Create a struct which implements Card.
@@ -117,31 +112,7 @@ enum CardError: Error {
 //     This will require unwrapping optionals. Think about whether it makes
 //     sense to use a guard-let or an if-let in this scenario.
 /* BEGIN YOUR CODE */
-struct StandardCard: Card {
-    var suit: CardSuit
-    var value: CardValue
-    
-    init(from data: [String: String]) throws {
-        guard let suitString = data["suit"] else {
-            throw CardError.missingSuit
-        }
-        
-        guard let valueString = data["value"] else {
-            throw CardError.missingValue
-        }
-        
-        guard let suit = CardSuit.parse(from: suitString) else {
-            throw CardError.invalidSuit
-        }
-        
-        guard let value = CardValue.parse(from: valueString) else {
-            throw CardError.invalidValue
-        }
-        
-        self.suit = suit
-        self.value = value
-    }
-}
+
 /* END YOUR CODE */
 
 func containsInvalidCard(cardData: [[String: String]]) -> Bool {
@@ -149,10 +120,7 @@ func containsInvalidCard(cardData: [[String: String]]) -> Bool {
         // [3] Use optional conversion to check if a card is invalid.
         //     Hint: Use try?
         /* BEGIN YOUR CODE */
-        let possibleCard: Card? = try? StandardCard(from: cardElement)
-        guard let _ = possibleCard else {
-            return true
-        }
+        
         /* END YOUR CODE */
     }
     return false
@@ -161,26 +129,11 @@ func containsInvalidCard(cardData: [[String: String]]) -> Bool {
 func getHand(from cardData: [[String: String]]) -> [Card] {
     // [4] Parse the card data and return an array of valid cards.
     //     Print any errors in the console.
-    /* BEGIN YOUR CODE */
     var result: [Card] = []
-    for cardElement in cardData {
-        do {
-            let card: Card = try StandardCard(from: cardElement)
-            result.append(card)
-        } catch CardError.missingSuit {
-            print("ERROR: Found a card without a suit!")
-        } catch CardError.missingValue {
-            print("ERROR: Found a card without a value!")
-        } catch CardError.invalidSuit {
-            print("ERROR: Found a card with an invalid suit!")
-        } catch CardError.invalidValue {
-            print("ERROR: Found a card with an invalid value!")
-        } catch {
-            print("ERROR: Found a card which couldn't be parsed!")
-        }
-    }
-    return result
+    /* BEGIN YOUR CODE */
+    
     /* END YOUR CODE */
+    return result
 }
 
 // [5] Currently, printing a list of cards might look a bit weird.
@@ -189,11 +142,7 @@ func getHand(from cardData: [[String: String]]) -> [Card] {
 //     Hint #1: It should conform to CustomStringConvertible
 //     Hint #2: Take a look at the `rawValue` property of a String-conforming enum
 /* BEGIN YOUR CODE */
-extension StandardCard: CustomStringConvertible {
-    var description: String {
-        return self.value.rawValue + " of " + self.suit.rawValue
-    }
-}
+
 /* END YOUR CODE */
 
 // Some invalid data is present in the user's hand.
