@@ -31,7 +31,7 @@ protocol PersonalID {
     var address: String { get set }
     
     // Function requirements
-    func move(newAddress: String)
+    mutating func move(newAddress: String)
     func toString() -> String
 }
 
@@ -48,7 +48,30 @@ is left up to the struct/class implementing it.
 
 // [2] Implement DriversLicense which conforms to PersonalID and Identifiable
 
-struct DriversLicense: PersonalID {
+struct DriversLicense: PersonalID, Identifiable {
+    var firstName: String
+    var lastName: String
+    var expirationDate: String
+    var address: String
+    
+    var licenseNumber: String
+    var dateOfBirth: String
+    var vehicleClass: String
+    
+    var id: String { licenseNumber }
+
+    mutating func move(newAddress: String) {
+        address = newAddress
+    }
+    
+    func toString() -> String {
+        "Name: \(firstName) \(lastName), Address: \(address), Expiration: \(expirationDate)"
+    }
+    
+    mutating func renewLicense(newExpirationDate: String) {
+        expirationDate = newExpirationDate
+    }
+    
     /**
         Steps To Do:
             1. Implement the protocol requirements specified in PersonalID.
@@ -68,18 +91,43 @@ struct DriversLicense: PersonalID {
 
 // [3] Test out the functionality of your newly created struct
 
+var DriversLicense1 = DriversLicense(firstName: "Leo", lastName: "Ouyang", expirationDate: "5/05/2027", address: "blah", licenseNumber: "jsqw01392302", dateOfBirth: "5/02/2005", vehicleClass: "C")
+
 // Provide values for your properties as arguments to remove error messages
 //
 // If there are no error messages, you might want to take a second look
 // at your implementation for [2]
-var myDriversLicense: DriversLicense = DriversLicense()
 
 // print your license information on the line below.
 
+print(DriversLicense1)
+
 // now, change your address and print toString again.
 
+DriversLicense1.move(newAddress: "blah blah")
+print(DriversLicense1)
 
 // [4] Create a Buzzcard struct which conforms to PersonalID and Hashable
+
+struct Buzzcard: PersonalID, Hashable {
+    var firstName: String
+    var lastName: String
+    var expirationDate: String
+    var address: String
+    
+    var graduationDate: String
+    var cardNumber: String
+    var dateOfBirth: String
+    
+    mutating func move(newAddress: String) {
+        address = newAddress
+    }
+    
+    func toString() -> String {
+        "Name: \(firstName) \(lastName), Address: \(address), Expiration: \(expirationDate)"
+    }
+    
+}
 
 /**
  Next, you will create another personal id, Buzzcard, that conforms to our
@@ -89,7 +137,6 @@ var myDriversLicense: DriversLicense = DriversLicense()
  */
 
 // ADD YOUR PROTOCOL STARTING BELOW THIS LINE
-
 
 // [5] Create an extension of PersonalID which consolidates redundant code.
 
@@ -104,8 +151,8 @@ var myDriversLicense: DriversLicense = DriversLicense()
  */
 
 extension PersonalID {
-    func move(newAddress: String) {
-        // your code here
+    mutating func move(newAddress: String) {
+        address = newAddress
     }
 }
 
@@ -119,3 +166,10 @@ extension PersonalID {
  */
 
 // your code here
+
+
+extension PersonalID {
+    func toString() -> String {
+        "Name: \(firstName) \(lastName), Address: \(address), Expiration: \(expirationDate)"
+    }
+}
