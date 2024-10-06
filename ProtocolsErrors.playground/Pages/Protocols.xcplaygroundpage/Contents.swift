@@ -48,7 +48,7 @@ is left up to the struct/class implementing it.
 
 // [2] Implement DriversLicense which conforms to PersonalID and Identifiable
 
-struct DriversLicense: PersonalID {
+struct DriversLicense: PersonalID, Identifiable {
     /**
         Steps To Do:
             1. Implement the protocol requirements specified in PersonalID.
@@ -57,6 +57,18 @@ struct DriversLicense: PersonalID {
               drivers licenses.
             3. Make DriversLicense also conform to Identifiable.
      */
+    var firstName: String
+    var lastName: String
+    var expirationDate: String
+    var address: String
+    var id: String
+    var licenseNumber: String
+    var issuingState: String
+    var dateOfBirth: String
+
+    func toString() -> String {
+        return "License ID: \(id), Name: \(firstName) \(lastName), Address: \(address), Expiry: \(expirationDate), State: \(issuingState)"
+    }
 }
 
 /**
@@ -72,25 +84,38 @@ struct DriversLicense: PersonalID {
 //
 // If there are no error messages, you might want to take a second look
 // at your implementation for [2]
-var myDriversLicense: DriversLicense = DriversLicense()
-
+var myDriversLicense: DriversLicense = DriversLicense(firstName: "Matthew", lastName: "Dong", expirationDate: "December 31, 20026", address: "Some St. Atlanta GA", id: "246810", licenseNumber: "123456", issuingState: "January 14, 2022", dateOfBirth: "December 31, 2004")
 // print your license information on the line below.
-
+print(myDriversLicense.toString())
 // now, change your address and print toString again.
-
+myDriversLicense.move(newAddress: "Another St. Duluth GA")
+print(myDriversLicense.toString())
 
 // [4] Create a Buzzcard struct which conforms to PersonalID and Hashable
-
-/**
- Next, you will create another personal id, Buzzcard, that conforms to our
- protocol. Follow the same 3 steps as in DriversLicense.
- 
- After that, make Buzzcard hashable.
- */
-
-// ADD YOUR PROTOCOL STARTING BELOW THIS LINE
-
-
+struct Buzzcard: PersonalID, Hashable {
+    func toString() -> String {
+        return "Buzzcard: \(cardNumber), Name: \(firstName) \(lastName), Balance: $\(balance), Expiry: \(expirationDate)"
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(cardNumber)
+    }
+    
+    /**
+     Next, you will create another personal id, Buzzcard, that conforms to our
+     protocol. Follow the same 3 steps as in DriversLicense.
+     
+     After that, make Buzzcard hashable.
+     */
+    
+    // ADD YOUR PROTOCOL STARTING BELOW THIS LINE
+    var firstName: String
+    var lastName: String
+    var expirationDate: String
+    var address: String
+    var cardNumber: String
+    var balance: Double
+}
 // [5] Create an extension of PersonalID which consolidates redundant code.
 
 /**
@@ -102,15 +127,20 @@ var myDriversLicense: DriversLicense = DriversLicense()
  
  Copy your code for the move function into the extension shell code below.
  */
-
 extension PersonalID {
     func move(newAddress: String) {
-        // your code here
+        var updatedCard = self
+        updatedCard.address = newAddress
+        print("Address updated to: \(updatedCard.address)")
     }
 }
 
 // [6] Implement an extension from scratch which adds toString() functionality
-
+extension PersonalID {
+    func toString() -> String {
+        return "\(firstName) \(lastName), Address: \(address), Expiry: \(expirationDate)"
+    }
+}
 /**
  Once you have implemented a function in a protocol extension, you can choose
  to delete the redundant function in your structs/classes, or leave it if you
