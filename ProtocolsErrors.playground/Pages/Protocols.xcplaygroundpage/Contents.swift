@@ -31,7 +31,7 @@ protocol PersonalID {
     var address: String { get set }
     
     // Function requirements
-    func move(newAddress: String)
+    mutating func move(newAddress: String)
     func toString() -> String
 }
 
@@ -48,7 +48,7 @@ is left up to the struct/class implementing it.
 
 // [2] Implement DriversLicense which conforms to PersonalID and Identifiable
 
-struct DriversLicense: PersonalID {
+struct DriversLicense: PersonalID, Identifiable {
     /**
         Steps To Do:
             1. Implement the protocol requirements specified in PersonalID.
@@ -57,6 +57,23 @@ struct DriversLicense: PersonalID {
               drivers licenses.
             3. Make DriversLicense also conform to Identifiable.
      */
+    var id: UUID // Unique identifier for Identifiable
+    var firstName: String
+    var lastName: String
+    var expirationDate: String
+    var address: String
+    var licenseNumber: String
+    var issueDate: String
+    var state: String
+        
+        // Function requirement implementation
+    mutating func move(newAddress: String) {
+        self.address = newAddress
+    }
+        
+    func toString() -> String {
+        return "Driver's License:\nName: \(firstName) \(lastName)\nAddress:\(address)\nExpirationDate:\(expirationDate)\nLicense Number: \(licenseNumber)\nIssue Date: \(issueDate)\nState: \(state)"
+    }
 }
 
 /**
@@ -72,12 +89,22 @@ struct DriversLicense: PersonalID {
 //
 // If there are no error messages, you might want to take a second look
 // at your implementation for [2]
-var myDriversLicense: DriversLicense = DriversLicense()
+var myDriversLicense: DriversLicense = DriversLicense(
+    id: UUID(),
+    firstName: "John",
+    lastName: "Doe",
+    expirationDate: "12/31/2025",
+    address: "123 Main St",
+    licenseNumber: "D123456789",
+    issueDate: "01/01/2020",
+    state: "CA"
+)
 
 // print your license information on the line below.
-
+print(myDriversLicense.toString())
 // now, change your address and print toString again.
-
+myDriversLicense.move(newAddress: "456 Elm St")
+print(myDriversLicense.toString())
 
 // [4] Create a Buzzcard struct which conforms to PersonalID and Hashable
 
@@ -89,7 +116,32 @@ var myDriversLicense: DriversLicense = DriversLicense()
  */
 
 // ADD YOUR PROTOCOL STARTING BELOW THIS LINE
-
+struct Buzzcard: PersonalID, Hashable {
+    var id: UUID // Unique identifier for Identifiable
+    var firstName: String
+    var lastName: String
+    var expirationDate: String
+    var address: String
+    var cardNumber: String
+    
+    // Function requirement implementation
+    mutating func move(newAddress: String) {
+        self.address = newAddress
+    }
+    
+    func toString() -> String {
+        return "Buzzcard:\nName: \(firstName) \(lastName)\nAddress: \(address)\nExpiration Date: \(expirationDate)\nCard Number: \(cardNumber)"
+    }
+    
+    // Hashable conformance
+    static func == (lhs: Buzzcard, rhs: Buzzcard) -> Bool {
+        return lhs.cardNumber == rhs.cardNumber
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(cardNumber)
+    }
+}
 
 // [5] Create an extension of PersonalID which consolidates redundant code.
 
@@ -104,8 +156,8 @@ var myDriversLicense: DriversLicense = DriversLicense()
  */
 
 extension PersonalID {
-    func move(newAddress: String) {
-        // your code here
+    mutating func move(newAddress: String) {
+        self.address = newAddress
     }
 }
 
@@ -119,3 +171,8 @@ extension PersonalID {
  */
 
 // your code here
+extension PersonalID {
+    func toString() -> String {
+        return "\(firstName) \(lastName) - \(address), expires on \(expirationDate)"
+    }
+}
