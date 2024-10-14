@@ -104,7 +104,12 @@ let cardData: [[String: String]] = [
 //     - Invalid suit
 //     - Invalid value
 /* BEGIN YOUR CODE */
-
+enum customError: Error {
+    case noSuitProvided
+    case noValueProvided
+    case invalidSuit
+    case invalidValue
+}
 /* END YOUR CODE */
 
 // [2] Create a struct which implements Card.
@@ -112,7 +117,17 @@ let cardData: [[String: String]] = [
 //     This will require unwrapping optionals. Think about whether it makes
 //     sense to use a guard-let or an if-let in this scenario.
 /* BEGIN YOUR CODE */
-
+struct setOfCards: Card{
+    var suit: CardSuit
+    var value: CardValue
+    
+    init(from data: [String : String]) throws {
+        //var data: [String : String]?
+        if let unwrappedData = data{
+            
+        }
+    }
+}
 /* END YOUR CODE */
 
 func containsInvalidCard(cardData: [[String: String]]) -> Bool {

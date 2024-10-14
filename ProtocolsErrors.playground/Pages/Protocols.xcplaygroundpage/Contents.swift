@@ -48,7 +48,7 @@ is left up to the struct/class implementing it.
 
 // [2] Implement DriversLicense which conforms to PersonalID and Identifiable
 
-struct DriversLicense: PersonalID {
+struct DriversLicense: PersonalID, Identifiable{
     /**
         Steps To Do:
             1. Implement the protocol requirements specified in PersonalID.
@@ -56,6 +56,25 @@ struct DriversLicense: PersonalID {
             2. Add 3 additional properties and 1 function that apply solely to
               drivers licenses.
             3. Make DriversLicense also conform to Identifiable.
+     */
+    var firstName: String
+    var lastName: String
+    var expirationDate: String
+    var address: String
+    //additional properties
+    var id = UUID()
+    var birthDate: String
+    var bloodType: String
+    var weight: Int
+    //function
+    /*
+    func move(newAddress: String){
+        
+    }
+    func toString() -> String{
+        var result: String = firstName + " " + lastName + " Expiration: " + expirationDate + "address: " + address
+        return result
+    }
      */
 }
 
@@ -72,14 +91,34 @@ struct DriversLicense: PersonalID {
 //
 // If there are no error messages, you might want to take a second look
 // at your implementation for [2]
-var myDriversLicense: DriversLicense = DriversLicense()
+var myDriversLicense: DriversLicense = DriversLicense(firstName: "David", lastName: "H", expirationDate: "Jan 20th", address: "1234 bonkers", birthDate: "Feb 24th", bloodType: "E", weight: 111)
 
 // print your license information on the line below.
-
+myDriversLicense.toString()
 // now, change your address and print toString again.
-
+myDriversLicense.move(newAddress: "1234 Bikerlane")
+myDriversLicense.toString()
 
 // [4] Create a Buzzcard struct which conforms to PersonalID and Hashable
+
+struct BuzzCard: PersonalID, Hashable{
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(firstName)
+    }
+    var firstName: String
+    var lastName: String
+    var expirationDate: String
+    var address: String
+    //additional properties
+    var id = UUID()
+    var birthDate: String
+    var bloodType: String
+    var weight: Int
+    //function
+    func getExpiration() -> String{
+        return expirationDate
+    }
+}
 
 /**
  Next, you will create another personal id, Buzzcard, that conforms to our
@@ -90,6 +129,29 @@ var myDriversLicense: DriversLicense = DriversLicense()
 
 // ADD YOUR PROTOCOL STARTING BELOW THIS LINE
 
+struct MyBuzzCard: PersonalID, Identifiable, Hashable{
+    /**
+        Steps To Do:
+            1. Implement the protocol requirements specified in PersonalID.
+              The function implementation is up to your interpretation.
+            2. Add 3 additional properties and 1 function that apply solely to
+              drivers licenses.
+            3. Make DriversLicense also conform to Identifiable.
+     */
+    var firstName: String
+    var lastName: String
+    var expirationDate: String
+    var address: String
+    //additional properties
+    var id = UUID()
+    var birthDate: String
+    var bloodType: String
+    var weight: Int
+    //function
+    func getExpiration() -> String{
+        return expirationDate
+    }
+}
 
 // [5] Create an extension of PersonalID which consolidates redundant code.
 
@@ -104,8 +166,8 @@ var myDriversLicense: DriversLicense = DriversLicense()
  */
 
 extension PersonalID {
-    func move(newAddress: String) {
-        // your code here
+    func move(newAddress: String){
+        let address = newAddress
     }
 }
 
@@ -118,4 +180,9 @@ extension PersonalID {
  for the "toString" method.
  */
 
-// your code here
+extension PersonalID{
+    func toString() -> String{
+        var result: String = firstName + " " + lastName + " Expiration: " + expirationDate + "address: " + address
+        return result
+    }
+}
