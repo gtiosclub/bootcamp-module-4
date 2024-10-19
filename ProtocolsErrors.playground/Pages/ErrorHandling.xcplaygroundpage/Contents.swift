@@ -109,6 +109,19 @@ enum customError: Error {
     case noValueProvided
     case invalidSuit
     case invalidValue
+    
+    var errorDescription: String? {
+        switch self {
+        case .noSuitProvided:
+            return "There was no suit provided, please try again."
+        case .noValueProvided:
+            return "There was no value provided, please try again."
+        case .invalidSuit:
+            return "The suit provided was invalid, please try again"
+        case .invalidValue:
+            return "The value provided was invalid, please try again"
+        }
+    }
 }
 /* END YOUR CODE */
 
@@ -117,16 +130,42 @@ enum customError: Error {
 //     This will require unwrapping optionals. Think about whether it makes
 //     sense to use a guard-let or an if-let in this scenario.
 /* BEGIN YOUR CODE */
-struct setOfCards: Card{
+struct StandardCard: Card{
     var suit: CardSuit
     var value: CardValue
     
     init(from data: [String : String]) throws {
-        //var data: [String : String]?
-        if let unwrappedData = data{
-            
+        for i in 0...cardData.count{
+            if let unwrappedCard = CardSuit.parse(from: cardData[i]["suit"] ?? " ") {
+                if unwrappedCard.rawValue == " " {
+                    customError.noSuitProvided
+                }
+            }
         }
-    }
+        
+        for i in 0...cardData.count{
+            if let unwrappedCard = CardValue.parse(from: cardData[i]["value"] ?? " ") {
+                if unwrappedCard.rawValue == " " {
+                    customError.noValueProvided
+                }
+            }
+        }
+
+        for i in 0...cardData.count{
+            if let unwrappedCard = CardValue.parse(from: cardData[i]["value"] ?? " ") {
+                if unwrappedCard.rawValue == " " {
+                    customError.noValueProvided
+                }
+            }
+        }
+        
+        for i in 0...cardData.count{
+            if let unwrappedCard = CardValue.parse(from: cardData[i]["value"] ?? " ") {
+                if unwrappedCard.rawValue == " " {
+                    customError.noValueProvided
+                }
+            }
+        }
 }
 /* END YOUR CODE */
 
@@ -135,7 +174,19 @@ func containsInvalidCard(cardData: [[String: String]]) -> Bool {
         // [3] Use optional conversion to check if a card is invalid.
         //     Hint: Use try?
         /* BEGIN YOUR CODE */
-        
+        do {
+            try StandardCard.init(from: cardElement)
+        } catch customError.noSuitProvided{
+            return false
+        } catch customError.noValueProvided{
+            return false
+        } catch customError.invalidSuit{
+            return false
+        } catch customError.invalidValue{
+            return false
+        } catch {
+            
+        }
         /* END YOUR CODE */
     }
     return false
@@ -146,7 +197,11 @@ func getHand(from cardData: [[String: String]]) -> [Card] {
     //     Print any errors in the console.
     var result: [Card] = []
     /* BEGIN YOUR CODE */
-    
+        if (!containsInvalidCard(cardData: cardData)) {
+            for cardElements in cardData{
+                result.append(StandardCard.init(from: cardElements))
+            }
+        }
     /* END YOUR CODE */
     return result
 }
@@ -157,7 +212,49 @@ func getHand(from cardData: [[String: String]]) -> [Card] {
 //     Hint #1: It should conform to CustomStringConvertible
 //     Hint #2: Take a look at the `rawValue` property of a String-conforming enum
 /* BEGIN YOUR CODE */
+    struct printCard: Card, CustomStringConvertible{
+        var description: String
+        
+        var suit: CardSuit
+        var value: CardValue
+        
+        init(from data: [String : String]) throws {
+            for i in 0...cardData.count{
+                if let unwrappedCard = CardSuit.parse(from: cardData[i]["suit"] ?? " ") {
+                    if unwrappedCard.rawValue == " " {
+                        customError.noSuitProvided
+                    }
+                }
+            }
+            
+            for i in 0...cardData.count{
+                if let unwrappedCard = CardValue.parse(from: cardData[i]["value"] ?? " ") {
+                    if unwrappedCard.rawValue == " " {
+                        customError.noValueProvided
+                    }
+                }
+            }
 
+            for i in 0...cardData.count{
+                if let unwrappedCard = CardValue.parse(from: cardData[i]["value"] ?? " ") {
+                    if unwrappedCard.rawValue == " " {
+                        customError.noValueProvided
+                    }
+                }
+            }
+            
+            for i in 0...cardData.count{
+                if let unwrappedCard = CardValue.parse(from: cardData[i]["value"] ?? " ") {
+                    if unwrappedCard.rawValue == " " {
+                        customError.noValueProvided
+                    }
+                }
+            }
+            
+            print("\(value) of \(suit)")
+        
+        return
+    }
 /* END YOUR CODE */
 
 // Some invalid data is present in the user's hand.
